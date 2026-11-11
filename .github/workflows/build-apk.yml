@@ -27,14 +27,34 @@ jobs:
         with:
           gradle-version: '8.11.1'
 
-      - name: Provjeri Android SDK
+      - name: Ispravi Android konfiguraciju
         run: |
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          ls "$ANDROID_HOME/platforms"
+          cat > app/build.gradle <<'EOF'
+          plugins {
+              id 'com.android.application'
+          }
+
+          android {
+              namespace 'hr.luna.studio'
+              compileSdk 35
+
+              defaultConfig {
+                  applicationId 'hr.luna.studio'
+                  minSdk 26
+                  targetSdk 35
+                  versionCode 50
+                  versionName '5.0'
+              }
+
+              compileOptions {
+                  sourceCompatibility JavaVersion.VERSION_17
+                  targetCompatibility JavaVersion.VERSION_17
+              }
+          }
+          EOF
 
       - name: Izradi APK
-        run: |
-          gradle :app:assembleDebug --no-daemon
+        run: gradle :app:assembleDebug --no-daemon
 
       - name: Spremi APK
         uses: actions/upload-artifact@v4
@@ -42,5 +62,6 @@ jobs:
           name: Luna-3D-Studio-5-APK
           path: app/build/outputs/apk/debug/app-debug.apk
           if-no-files-found: error
+          
           
           
