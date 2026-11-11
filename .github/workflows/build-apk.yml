@@ -13,8 +13,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Raspakiraj Lunu
-        run: |
-          unzip -o Luna_3D_Studio_5_0_ANDROID_GITHUB_SOURCE.zip -d .
+        run: unzip -o Luna_3D_Studio_6_0_ANDROID_SOURCE.zip -d .
+        
+          
 
       - name: Postavi Javu
         uses: actions/setup-java@v4
