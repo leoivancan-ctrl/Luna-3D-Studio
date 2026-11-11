@@ -1,0 +1,41 @@
+
+name: Luna 3D Studio APK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Preuzmi repozitorij
+        uses: actions/checkout@v4
+
+      - name: Raspakiraj Lunu
+        run: |
+          unzip -o Luna_3D_Studio_5_0_ANDROID_GITHUB_SOURCE.zip -d .
+
+      - name: Postavi Javu
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: Postavi Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Postavi Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.11.1'
+
+      - name: Izradi APK
+        run: gradle :app:assembleDebug --no-daemon
+
+      - name: Spremi APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: Luna-3D-Studio-5-APK
+          path: app/build/outputs/apk/debug/app-debug.apk
+          
